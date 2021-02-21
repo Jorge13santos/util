@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<image schemaversion="6.9" name="OpenSUSE-15.1-lojas">
+    <!-- Image information -->
+    <description type="system">
+        <author>SSYS Sistemas e Solucoes Tecnologicas LTDA.</author>
+        <contact>contato@ssys.com.br</contact>
+        <specification>OpenSUSE Leap 15.1 Via Varejo Lojas x86_64</specification>
+    </description>
+
+    <!-- Preferences -->
+    <preferences>
+        <type bootloader="grub2" image="oem" initrd_system="dracut" bootpartition="false" boottimeout="3" filesystem="btrfs" fsmountoptions="noatime,compress=lzo" btrfs_root_is_snapshot="true" btrfs_root_is_readonly_snapshot="false" boot="oemboot/suse-leap15.0" bootkernel="std" installiso="true" installboot="install" devicepersistency="by-uuid" vga="792" installprovidefailsafe="false" volid="ViaVarejoInstallation" kernelcmdline="net.ifnames=0 plymouth.enable=0 splash=silent console=tty1 quiet" firmware="uefi" efipartsize="550">
+            <!-- Grub password: newgeneration -->
+            <!-- OEM Config -->
+            <oemconfig>
+                <oem-boot-title>OpenSUSE 15.1 Via Varejo x86_64</oem-boot-title>
+                <oem-bootwait>false</oem-bootwait>
+                <oem-device-filter>/dev/ram</oem-device-filter>
+                <oem-inplace-recovery>false</oem-inplace-recovery>
+                <oem-kiwi-initrd>false</oem-kiwi-initrd>
+                <oem-multipath-scan>false</oem-multipath-scan>
+                <oem-reboot>true</oem-reboot>
+                <oem-recovery>false</oem-recovery>
+                <oem-silent-boot>true</oem-silent-boot>
+                <oem-skip-verify>true</oem-skip-verify>
+                <oem-swap>true</oem-swap>
+                <oem-swapsize>1024</oem-swapsize>
+                <oem-unattended>true</oem-unattended>
+            </oemconfig>
+
+            <!-- System Disk using BTRFS -->
+            <systemdisk>
+                <volume name="home"/>
+                <volume name="root"/>
+                <volume name="tmp"/>
+                <volume name="opt"/>
+                <volume name="srv"/>
+                <volume name="boot/grub2/i386-pc"/>
+                <volume name="boot/grub2/x86_64-efi" mountpoint="boot/grub2/x86_64-efi"/>
+                <volume name="usr/local"/>
+                <volume name="var" copy_on_write="false"/>
+            </systemdisk>
+        </type>
+
+        <!-- General settings -->
+        <version>2.0.4</version>
+        <packagemanager>zypper</packagemanager>
+        <rpm-check-signatures>false</rpm-check-signatures>
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <keytable>br-abnt2.map.gz</keytable>
+        <timezone>America/Sao_Paulo</timezone>
+        <locale>pt_BR</locale>
+        <bootsplash-theme>spinner</bootsplash-theme>
+        <bootloader-theme>openSUSE</bootloader-theme>
+    </preferences>
+
+    <!-- Profiles definition -->
+    <profiles>
+        <profile name="via-varejo-x86_64" description="Setup Via Varejo"/>
+    </profiles>
+
+    <!-- Users in the system -->
+    <users >
+        <!-- Senha: m@cr0pr0c3ss0 -->
+        <user password="$1$SZ086S2u$5lOum5Gz1.D0AVn1/yWFV0" home="/root" name="root" id="0" shell="/bin/bash" groups="root"/>
+        <!-- Senha: g@lv@n1z@d0 -->
+	<user password="$1$lQmleTRE$Wt58brmmV963zgCRh838X." home="/home/viavarejo" name="viavarejo" id="1000" shell="/bin/bash" groups="users,video"/>
+        <!-- Senha: multiskill@20 -->
+        <user password="$1$rwGkEwP7$IaI2cbO9iQ4RmokXOxeCp/" home="/var/pdv" name="usrpdv" id="1001" shell="/bin/bash" groups="users,video,lp,dialout,nobody,tty"/>
+        <!-- Senha: suse15@20 -->
+        <user password="$1$yuu7vc3N$O6eRohlD.qLHXrROi9rhL." home="/home/usrautocom" name="usrautocom" id="1002" shell="/bin/bash" groups="users"/>
+        <!-- Senha: senhatec -->
+	<user password="$1$kZho5k5Q$5vcOdSjFHnDJuS2lvPb.G/" home="/home/usrtec" name="usrtec" id="1003" shell="/bin/bash" groups="users,tty"/>
+	<user home="/var/lib/pgsql" name="postgres" id="26" shell="/sbin/nologin" groups="postgres"/>
+    </users>
+
+    <!-- Repositories -->
+    <!-- OpenSUSE ISO -->
+    <repository type="rpm-md" priority="20" alias="openSUSE_15_1_installer_x86_64">
+        <source path="iso:///opt/isos/openSUSE-Leap-15.1-DVD-x86_64.iso"/>
+    </repository>
+    <!-- Salt Bootstrap -->
+    <!--
+    <repository type="rpm-md" priority="2" alias="sle_manager_tools15_pool_x86_64_sled_sp1">
+        <source path="dir:///opt/kiwi/project-via-varejo-openSUSE-15-x86_64/repos/salt-bootstrap"/>
+    </repository>
+    -->
+    <!-- Local -->
+    <repository type="rpm-dir" priority="1" alias="repo_via_varejo">
+        <source path="dir:///opt/kiwi/project-via-varejo-openSUSE-15.1-x86_64/repos/viavarejo"/>
+    </repository>
+    <!-- Updates -->
+    <repository type="rpm-md" priority="10" alias="openSUSE_15_1_updates_x86_64">
+        <source path="http://download.opensuse.org/update/leap/15.1/oss"/>
+    </repository>
+    <repository type="rpm-md" priority="10" alias="openSUSE_15_1_distribution_x86_64">
+        <source path="http://download.opensuse.org/distribution/leap/15.1/repo/oss"/>
+    </repository>
+
+    <!-- Packages -->
+    <packages type="bootstrap" patternType="plusRecommended">
+        <package name="udev"/>
+        <package name="filesystem"/>
+        <package name="glibc-locale"/>
+        <package name="glibc-locale-base"/>
+        <package name="ca-certificates"/>
+        <package name="ca-certificates-mozilla"/>
+        <package name="openSUSE-release"/>
+    </packages>
+
+    <packages type="image" patternType="plusRecommended">
+        <package name="patterns-base-minimal_base"/>
+        <package name="aaa_base-extras"/>
+        <package name="acl"/>
+        <package name="chrony"/>
+        <package name="curl"/>
+        <package name="dracut"/>
+        <package name="dracut-kiwi-oem-repart"/>
+        <package name="dracut-kiwi-oem-dump"/>
+        <package name="fipscheck"/>
+        <package name="group(mail)"/>
+        <package name="group(wheel)"/>
+        <package name="grub2-branding-openSUSE" bootinclude="true"/>
+        <package name="iputils"/>
+        <package name="issue-generator"/>
+        <package name="zypper-lifecycle-plugin"/>
+        <package name="vim"/>
+        <package name="shim" arch="x86_64"/>
+        <package name="grub2"/>
+        <package name="grub2-x86_64-efi" arch="x86_64"/>
+        <package name="haveged"/>
+        <package name="less" />
+        <package name="tar"/>
+        <package name="parted"/>
+        <package name="SUSEConnect"/>
+        <package name="systemd"/>
+        <package name="systemd-sysvinit"/>
+        <package name="timezone"/>
+        <package name="wicked"/>
+        <package name="iproute2"/>
+        <package name="openssh"/>
+        <package name="rsync"/>
+        <package name="salt-minion"/>
+        <package name="btrfsprogs"/>
+        <package name="btrfsmaintenance"/>
+        <package name="grub2-snapper-plugin"/>
+        <package name="rollback-helper"/>
+        <package name="snapper"/>
+        <package name="yast2-firstboot"/>
+        <package name="firewalld"/>
+        <package name="mokutil"/>
+    </packages>
+
+    <packages type="oem" patternType="plusRecommended">
+        <!-- Patterns -->
+        <namedCollection name="base"/>
+        <namedCollection name="32bit"/>
+        <namedCollection name="x11"/>
+        <namedCollection name="apparmor"/>
+        <namedCollection name="yast2_basis"/>
+        <namedCollection name="gnome_basic"/>
+        <!-- Packages -->
+        <package name="libfreetype6"/>
+        <package name="openssh-askpass-gnome"/>
+        <package name="grub2-branding-openSUSE" bootinclude="true"/>
+        <package name="branding-openSUSE" bootinclude="true" bootdelete="true"/>
+        <package name="kernel-default" bootinclude="true"/>
+        <package name="dracut" bootinclude="true"/>
+        <package name="dracut-kiwi-oem-repart" bootinclude="true"/>
+        <package name="dracut-kiwi-oem-dump" bootinclude="true"/>
+        <package name="plymouth"/>
+        <package name="plymouth-branding-openSUSE" bootinclude="true"/>
+        <package name="plymouth-theme-spinner"/>
+        <package name="plymouth-scripts"/>
+        <package name="plymouth-dracut"/>
+        <package name="drm-kmp-default"/>
+        <package name="kernel-firmware"/>
+        <package name="autoyast2"/>
+        <package name="autoyast2-installation"/>
+        <package name="yast2-core"/>
+        <package name="yast2-network"/>
+        <package name="yast2-users"/>
+        <package name="yast2-update"/>
+        <package name="yast2-security"/>
+        <package name="yast2-services-manager"/>
+        <package name="yast2-ntp-client"/>
+        <package name="yast2-snapper"/>
+        <package name="yast2-auth-client"/>
+        <package name="grub2"/>
+        <package name="grub2-x86_64-efi" arch="x86_64"/>
+        <package name="grub2-i386-pc" arch="x86_64"/>
+        <package name="grub2-snapper-plugin"/>
+        <package name="syslinux"/>
+        <package name="iputils"/>
+        <package name="vim"/>
+        <package name="lvm2"/>
+        <package name="fontconfig"/>
+        <package name="fonts-config"/>
+        <package name="tar"/>
+        <package name="parted"/>
+        <package name="systemd-sysvinit"/>
+        <package name="systemd-bash-completion"/>
+        <package name="wicked"/>
+        <package name="supportutils"/>
+        <package name="iproute2"/>
+        <package name="openssh"/>
+        <package name="openssh-helpers"/>
+        <package name="rsync"/>
+        <package name="psmisc"/>
+        <package name="sudo"/>
+        <package name="dhcp-client"/>
+        <package name="which"/>
+        <package name="cron"/>
+        <package name="cronie"/>
+        <package name="perl-Config-Crontab"/>
+        <package name="libatk-1_0-0-32bit"/>
+        <package name="libgdk_pixbuf-2_0-0-32bit"/>
+        <package name="libpango-1_0-0-32bit"/>
+        <package name="libcairo2-32bit"/>
+        <package name="libgtk-2_0-0-32bit"/>
+        <package name="ghostscript-fonts-std"/>
+        <package name="bitstream-vera-fonts"/>
+        <package name="nmon"/>
+        <package name="xinetd"/>
+        <package name="jfingerprint-client"/>
+        <package name="libinput-tools"/>
+        <package name="firewalld"/>
+        <package name="firewalld-lang"/>
+        <package name="iftop"/>
+        <package name="cups"/>
+        <package name="cups-client"/>
+        <package name="cups-filters"/>
+        <package name="OpenPrintingPPDs-postscript"/>
+        <package name="OpenPrintingPPDs-hpijs"/>
+        <package name="OpenPrintingPPDs-ghostscript"/>
+        <package name="samba"/>
+        <package name="samba-client"/>
+        <package name="yast2-samba-client"/>
+        <package name="rsyslog"/>
+        <package name="iptables"/>
+        <package name="logrotate"/>
+        <package name="xorg-x11"/>
+        <package name="xorg-x11-essentials"/>
+        <package name="xorg-x11-driver-video"/>
+        <package name="xorg-x11-server"/>
+        <package name="xorg-x11-server-extra"/>
+        <package name="xorg-x11-Xvnc"/>
+        <package name="x11vnc"/>
+        <package name="xrdp"/>
+        <package name="xorgxrdp"/>
+        <package name="zip"/>
+        <package name="MozillaFirefox"/>
+        <package name="command-not-found"/>
+        <package name="terminfo"/>
+        <package name="terminfo-base"/>
+        <package name="timezone-java"/>
+        <package name="usbutils"/>
+        <package name="wireless-tools"/>
+        <package name="xkeyboard-config"/>
+        <package name="wget"/>
+        <package name="wpa_supplicant"/>
+        <package name="python3-python-dateutil"/>
+        <package name="crda"/>
+        <package name="telnet"/>
+        <package name="tigervnc"/>
+        <package name="sysfsutils"/>
+        <package name="dialog"/>
+        <package name="dbus-1-x11"/>
+        <package name="less"/>
+        <package name="mlocate"/>
+        <package name="cifs-utils"/>
+        <package name="keyutils"/>
+        <package name="gnome-calculator"/>
+        <package name="gnome-icon-theme"/>
+        <package name="gnome-vfs2"/>
+        <package name="metatheme-adwaita-common"/>
+        <package name="gtk2-metatheme-adwaita"/>
+        <package name="gtk2-theming-engine-adwaita"/>
+        <package name="gtk3-metatheme-adwaita"/>
+        <package name="gtk2-lang"/>
+        <package name="gtk3-lang"/>
+        <package name="libreoffice"/>
+        <package name="libreoffice-l10n-pt_BR"/>
+        <package name="libreoffice-icon-themes"/>
+        <package name="libreoffice-writer"/>
+        <package name="libreoffice-voikko"/>
+        <package name="libreoffice-math"/>
+        <package name="libreoffice-gnome"/>
+        <package name="libreoffice-calc"/>
+        <package name="libreoffice-impress"/>
+        <package name="libreoffice-draw"/>
+        <package name="ImageMagick"/>
+        <package name="gconf2"/>
+        <package name="dconf"/>
+        <package name="dconf-editor"/>
+        <package name="gsettings-backend-dconf"/>
+        <package name="gsettings-desktop-schemas"/>
+        <package name="salt-minion"/>
+        <package name="clone-master-clean-up"/>
+        <package name="ethtool"/>
+        <package name="python3-setuptools"/>
+        <package name="python3-M2Crypto"/>
+        <package name="python3-pyinotify"/>
+        <package name="python3-python-dateutil"/>
+        <package name="netcat-openbsd"/>
+        <package name="tcpdump"/>
+        <package name="sysstat"/>
+        <package name="pam"/>
+        <package name="iotop"/>
+        <package name="mtr"/>
+        <package name="htop"/>
+        <package name="python-curses"/>
+        <package name="cantarell-fonts"/>
+        <package name="liberation-fonts"/>
+        <package name="dejavu-fonts"/>
+        <package name="noto-sans-fonts"/>
+        <package name="noto-serif-fonts"/>
+        <package name="sgi-bitmap-fonts"/>
+        <package name="btrfsmaintenance"/>
+        <package name="btrfsprogs"/>
+        <package name="btrfsprogs-udev-rules"/>
+        <package name="snapper"/>
+        <package name="rollback-helper"/>
+        <package name="xauth"/>
+        <package name="SUSEConnect"/>
+        <package name="ca-certificates"/>
+        <package name="nfs-client"/>
+        <package name="rpcbind"/>
+        <package name="aaa_base"/>
+        <package name="aaa_base-extras"/>
+        <package name="zenity"/>
+        <package name="attr"/>
+        <package name="seahorse"/>
+        <package name="lsb-release"/>
+        <package name="net-tools-deprecated"/>
+        <package name="nginx"/>
+        <package name="libindicator3-7"/>
+        <package name="libdbusmenu-gtk3-4"/>
+        <package name="libdbusmenu-glib4"/>
+        <package name="libappindicator3-1"/>
+        <package name="google-chrome-stable"/>
+        <package name="ipcalc"/>
+        <package name="xf86-video-fbdev"/>
+        <package name="xf86-video-intel"/>
+        <package name="xrandr"/>
+        <package name="Mesa"/>
+        <package name="Mesa-demo-x"/>
+        <package name="evince"/>
+        <package name="evince-lang"/>
+        <package name="nautilus-evince"/>
+        <package name="evince-plugin-pdfdocument"/>
+        <package name="evince-plugin-dvidocument"/>
+        <package name="evince-plugin-psdocument"/>
+        <package name="evince-plugin-tiffdocument"/>
+        <package name="evince-plugin-xpsdocument"/>
+        <package name="clamav"/>
+        <package name="python3-lxml"/>
+        <package name="net-tools"/>
+        <package name="timezone"/>
+        <package name="poppler-tools"/>
+        <package name="sssd"/>
+        <package name="sssd-ldap"/>
+        <package name="sssd-tools"/>
+        <package name="apparmor-utils"/>
+        <package name="xhost"/>
+        <package name="ucode-intel"/>
+        <package name="bubblewrap"/>
+        <package name="dosfstools"/>
+        <package name="libcap-progs"/>
+        <package name="libcap-ng-utils"/>
+        <package name="lz4"/>
+        <!-- Gnome basic -->
+        <package name="at-spi2-atk-gtk2"/>
+        <package name="brasero"/>
+        <package name="desktop-file-utils"/>
+        <package name="eog"/>
+        <package name="file-roller"/>
+        <package name="gconf-editor"/>
+        <package name="gdm"/>
+        <package name="gedit"/>
+        <package name="gnome-keyring"/>
+        <package name="gnome-keyring-pam"/>
+        <package name="gnome-packagekit"/>
+        <package name="gnome-power-manager"/>
+        <package name="gnome-shell-classic"/>
+        <package name="gnome-system-monitor"/>
+        <package name="gnome-terminal"/>
+        <package name="gnome-user-docs"/>
+        <package name="gnome-tweak-tool"/>
+        <package name="nautilus"/>
+        <package name="nautilus-extension-terminal"/>
+        <package name="nautilus-share"/>
+        <package name="polkit-gnome"/>
+        <package name="pulseaudio"/>
+        <package name="pulseaudio-module-x11"/>
+        <package name="shared-mime-info"/>
+        <package name="xdg-user-dirs-gtk"/>
+        <package name="xscreensaver"/>
+        <!-- Gnome Paiting for HR -->
+        <package name="gnome-paint"/>
+        <!-- Lang and branding -->
+        <package name="gdm-lang"/>
+        <package name="gnome-calculator-lang"/>
+        <package name="gnome-control-center-lang"/>
+        <package name="gnome-desktop-lang"/>
+        <package name="gnome-menus-lang"/>
+        <package name="gnome-session-lang"/>
+        <package name="gnome-shell-lang"/>
+        <package name="gnome-terminal-lang"/>
+        <package name="gnome-themes-lang"/>
+        <package name="gnome-vfs2-lang"/>
+        <package name="libgnome-lang"/>
+        <package name="nautilus-lang"/>
+        <package name="zenity-lang"/>
+        <package name="gdm-branding-openSUSE"/>
+        <package name="MozillaFirefox-branding-openSUSE"/>
+        <package name="gnome-menus-branding-openSUSE"/>
+        <package name="desktop-translations"/>
+        <package name="MozillaFirefox-translations-common"/>
+        <package name="java-11-openjdk"/>
+        <package name="java-11-openjdk-headless"/>
+        <package name="java-1_8_0-ibm"/>
+        <package name="java-1_8_0-ibm-plugin"/>
+        <package name="insserv-compat"/>
+        <!-- postgres --> 
+        <package name="libpq5"/>
+        <package name="postgresql"/>
+        <package name="postgresql-server"/>
+        <!-- libQt -->
+        <package name="libQt5Gui5"/>
+        <package name="libqt5-qtimageformats"/>
+        <package name="libQt5Core5"/>
+        <package name="libqt5-qtbase-common-devel"/>
+        <package name="libQt5Widgets5"/>
+        <package name="libQt5Network5"/>
+        <package name="libQt5Network-devel"/>
+        <package name="libqt5-qttranslations"/>
+        <package name="libQt5Core-devel"/>
+        <package name="libQt5DBus5"/>
+        <package name="libQt5X11Extras5"/>
+        <package name="libQt5Svg5"/>
+        <package name="libqt5-qtbase-platformtheme-gtk3"/>
+        <!-- Mono -->
+        <package name="mono-core"/>
+        <package name="mono-data"/>
+        <package name="mono-data-sqlite"/>
+        <package name="mono-extras"/>
+        <package name="mono-mvc"/>
+        <package name="mono-wcf"/>
+        <package name="mono-web"/>
+        <package name="mono-winforms"/>
+        <package name="mono-winfxcore"/>
+        <!-- libXtst 32 bits -->
+        <package name="libX11-6-32bit"/>
+        <package name="libXau6-32bit"/>
+        <package name="libxcb1-32bit"/>
+        <package name="libXext6-32bit"/>
+        <package name="libXtst6-32bit"/>
+        <package name="libXt6-32bit"/>
+        <!-- cups -->
+        <package name="tmx-cups-backend"/>
+        <package name="EPSON-Port-Communication-Service"/>
+        <package name="tmx-cups"/>
+        <!-- drivers pdv -->
+        <package name="libpcre1"/>
+        <package name="ibm-javapos"/>
+        <package name="scope-client"/>
+        <package name="javaposcb"/>
+        <package name="javax-usb"/>
+        <package name="javax-usb-ri"/>
+        <package name="javax-usb-ri-linux"/>
+        <package name="epson-printer-javapos"/>
+        <package name="libsat-sweda"/>
+        <package name="libsat-tanca"/>
+        <!--
+        <package name="pdvcb-server-java"/>
+        <package name="libsat"/>
+        <archive name="../repos/viavarejo/aide-configs-2019108-1.i386.tar.gz"/>
+        <archive name="../repos/viavarejo/libECFJAVAPCB-1.4.8-7.i586.tar.gz"/>
+        <archive name="../repos/viavarejo/pdv-viavarejo-2020139-1.i386.tar.gz"/>
+        <package name="driver-epson-suse12"/>
+        <archive name="../repos/viavarejo/libsat-2019211-1.i386.tar.gz"/>
+        <package name="jmfcb-2.1.1e"/>
+        -->
+        <package name="pdv-viavarejo"/>
+        <package name="libECFJAVAPCB"/>
+        <package name="libECFJAVAPCB-MiddlePoS"/>
+        <package name="pinpad"/>
+        <!-- aplicacao pdv -->
+        <package name="config-pdv"/>
+        <package name="cbpadrao-java"/>
+        <package name="telaspdv"/>
+        <package name="telaspdv-midia"/>
+        <package name="telaspdv-midia-promocional"/>
+        <package name="telaspdv-vinheta"/>
+        <package name="jmfcb-2.1.1e"/>
+        <package name="sefaz-ce-atualizacao"/>
+        <!-- aplicacao multiskill -->
+        <package name="pdv-multiskill"/>
+    </packages>
+    <packages type="delete">
+        <package name="snapper-zypp-plugin"/>
+    </packages>
+</image>
