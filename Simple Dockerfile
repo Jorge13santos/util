@@ -9,3 +9,6 @@ EXPOSE 80
 
 
 # comando para criar a image ( docker build -t "webserver" . )
+
+# (subindo container) docker run -d -p 80:80 webserver /usr/sbin/apache2ctl -D FOREGROUND
+
